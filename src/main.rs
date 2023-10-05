@@ -60,7 +60,7 @@ struct State {
 
 impl Action for State {
     fn update(&mut self) {
-        self.app.queue.write_buffer(self.color.buffer(0, 0), 0, &[]);
+        self.app.queue.write_buffer(self.color.buffer(0, 0), 0, bytemuck::cast_slice(&[1.0, 0.0, 0.0, 1.0]));
     }
     fn new(app: AppSurface) -> Self {
         let shader = app
@@ -70,7 +70,7 @@ impl Action for State {
                 source: wgpu::ShaderSource::Wgsl(include_str!("shader.wgsl").into()),
             });
 
-        let color = uniform::Proxy::new(bytemuck::cast_slice(&[1.0; 4]), &[1], &app.device, ShaderStages::FRAGMENT);
+        let color = uniform::Proxy::new(bytemuck::cast_slice(&[1.0, 0.0, 0.0, 1.0]), &[1], &app.device, ShaderStages::FRAGMENT);
 
         let render_pipeline_layout =
             app.device
